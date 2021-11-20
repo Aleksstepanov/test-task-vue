@@ -1,18 +1,18 @@
 <template>
-  <div class="contanier">
-    <router-view />
-  </div>
+	<v-content tag="div">
+		<NavBar />
+		<router-view />
+		<v-footer />
+	</v-content>
 </template>
 
 <script>
-export default {};
+import NavBar from "../components/NavBar.vue";
+export default {
+	components: {
+		NavBar,
+	},
+};
 </script>
 
-<style>
-.contanier {
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-}
-</style>
+<style></style>
