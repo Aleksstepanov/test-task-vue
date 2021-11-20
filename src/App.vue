@@ -1,7 +1,18 @@
 <template>
-  <v-app>
-    <router-view />
-  </v-app>
+	<v-app>
+		<VueExtendLayout />
+	</v-app>
 </template>
 
+<script>
+import VueExtendLayout from "vue-extend-layout";
+
+export default {
+	name: "App",
+
+	components: {
+		VueExtendLayout,
+	},
+};
+</script>
 <style lang="scss"></style>
