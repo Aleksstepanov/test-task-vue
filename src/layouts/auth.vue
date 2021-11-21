@@ -3,12 +3,9 @@
 		d-flex
 		flex-column
 		:tag="'div'"
-		:class="{
-			dark: this.$vuetify.theme.dark,
-			light: this.$vuetify.theme.light,
-		}"
+		:style="{ background: this.background }"
 	>
-		<v-app-bar flat color="auth.primary"> <SwitchTheme /></v-app-bar>
+		<v-app-bar flat color="main"> <SwitchTheme /></v-app-bar>
 		<v-container
 			d-flex
 			flex-column
@@ -18,16 +15,14 @@
 			:style="'height: 100vh'"
 		>
 			<v-app-bar
+				tag="div"
 				flat
-				color="white"
+				color="main"
 				max-height="30px"
 				d-flex
 				:style="'margin-bottom: 20px'"
 			>
-				<router-link to="/login" :style="'padding-right: 20px'"
-					>Login</router-link
-				>
-				<router-link to="/register">Register</router-link>
+				<v-list></v-list>
 			</v-app-bar>
 			<router-view />
 		</v-container>
@@ -40,14 +35,18 @@ export default {
 	components: {
 		SwitchTheme,
 	},
+
+	inject: ["theme"],
+
+	computed: {
+		background() {
+			const { isDark } = this.theme;
+			return isDark
+				? this.$vuetify.theme.themes["dark"].main
+				: this.$vuetify.theme.themes["light"].main;
+		},
+	},
 };
 </script>
 
-<style lang="scss" scoped>
-.dark {
-	background: #212121;
-}
-.light {
-	background: #f5f5f5;
-}
-</style>
+<style lang="scss" scoped></style>

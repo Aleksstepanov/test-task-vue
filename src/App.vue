@@ -1,6 +1,8 @@
 <template>
 	<v-app>
-		<VueExtendLayout />
+		<v-theme-provider root>
+			<VueExtendLayout />
+		</v-theme-provider>
 	</v-app>
 </template>
 

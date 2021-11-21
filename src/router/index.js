@@ -5,7 +5,7 @@ Vue.use(VueRouter);
 
 const routes = [
 	{
-		path: "/",
+		path: "/dashboard",
 		name: "Dashboard",
 		component: () => import("../views/Dashboard.vue"),
 		meat: {
@@ -21,7 +21,7 @@ const routes = [
 		},
 	},
 	{
-		path: "/login",
+		path: "/",
 		name: "SignIn",
 		component: () => import("../views/SignIn.vue"),
 		meta: {
