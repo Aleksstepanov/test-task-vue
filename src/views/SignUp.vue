@@ -3,10 +3,30 @@
 		:style="'width: 400px; height: 400px; margin-top: 60px'"
 		@submit.prevent="signInClickHandler"
 	>
-		<v-text-field label="Email" v-model="form.email" />
-		<v-text-field label="Password" v-model="form.password" />
-		<v-text-field label="Last Name" v-model="form.lastName" />
-		<v-text-field label="First Name" v-model="form.firstName" />
+		<v-text-field
+			label="Email"
+			v-model="email"
+			append-icon="mdi-email"
+			type="email"
+			:error-messages="emailErrors"
+			required
+			@input="$v.email.$touch()"
+			@blur="$v.email.$touch()"
+		></v-text-field>
+		<v-text-field
+			:type="showPassword ? 'text' : 'password'"
+			label="Password"
+			v-model="password"
+			:append-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
+			@click:append="iconEyeClickHandler"
+			:error-messages="passwordErrors"
+			required
+			@input="$v.password.$touch()"
+			@blur="$v.password.$touch()"
+		>
+		</v-text-field>
+		<v-text-field label="Last Name" v-model="lastName" />
+		<v-text-field label="First Name" v-model="firstName" />
 		<v-row>
 			<v-col sm="4" offset="8" class="mt-12">
 				<v-btn color="primary" :style="'width: 100%'" type="submit"
@@ -18,28 +38,52 @@
 </template>
 
 <script>
+import { email, required, minLength } from "vuelidate/lib/validators";
+
 export default {
-	name: "Login",
+	name: "Register",
 
 	components: {},
 
 	data() {
 		return {
-			form: {
-				email: "",
-				password: "",
-				lastName: "",
-				firstName: "",
-			},
+			email: "",
+			password: "",
+			lastName: "",
+			firstName: "",
+			showPassword: false,
 		};
+	},
+
+	validations: {
+		email: { required, email },
+		password: { required, minLength: minLength(6) },
 	},
 
 	methods: {
 		signInClickHandler() {
-			console.log(this.form);
+			console.log(this.$v.$touch());
+		},
+		iconEyeClickHandler() {
+			this.showPassword = !this.showPassword;
 		},
 	},
 
-	computed: {},
+	computed: {
+		emailErrors() {
+			const errors = [];
+			if (!this.$v.email.$dirty) return errors;
+			!this.$v.email.email && errors.push("Must be valid e-mail");
+			!this.$v.email.required && errors.push("E-mail is required");
+			return errors;
+		},
+		passwordErrors() {
+			const errors = [];
+			if (!this.$v.password.$dirty) return errors;
+			!this.$v.password.required && errors.push("Password is required");
+			!this.$v.password.minLength && errors.push("Password is min");
+			return errors;
+		},
+	},
 };
 </script>

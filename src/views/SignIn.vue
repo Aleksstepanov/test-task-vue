@@ -5,17 +5,25 @@
 	>
 		<v-text-field
 			label="Email"
-			v-model="form.email"
+			v-model="email"
 			append-icon="mdi-email"
 			type="email"
+			:error-messages="emailErrors"
+			required
+			@input="$v.email.$touch()"
+			@blur="$v.email.$touch()"
 		>
 		</v-text-field>
 		<v-text-field
 			:type="showPassword ? 'text' : 'password'"
 			label="Password"
-			v-model="form.password"
+			v-model="password"
 			:append-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
 			@click:append="iconEyeClickHandler"
+			:error-messages="passwordErrors"
+			required
+			@input="$v.password.$touch()"
+			@blur="$v.password.$touch()"
 		>
 		</v-text-field>
 		<v-row>
@@ -29,30 +37,50 @@
 </template>
 
 <script>
+import { email, required, minLength } from "vuelidate/lib/validators";
+
 export default {
 	name: "Login",
+
+	validations: {
+		email: { required, email },
+		password: { required, minLength: minLength(6) },
+	},
 
 	components: {},
 
 	data() {
 		return {
-			form: {
-				email: "",
-				password: "",
-			},
+			email: "",
+			password: "",
 			showPassword: false,
 		};
 	},
 
 	methods: {
 		signInClickHandler() {
-			console.log(this.form);
+			console.log(this.$v.$touch());
 		},
 		iconEyeClickHandler() {
 			this.showPassword = !this.showPassword;
 		},
 	},
 
-	computed: {},
+	computed: {
+		emailErrors() {
+			const errors = [];
+			if (!this.$v.email.$dirty) return errors;
+			!this.$v.email.email && errors.push("Must be valid e-mail");
+			!this.$v.email.required && errors.push("E-mail is required");
+			return errors;
+		},
+		passwordErrors() {
+			const errors = [];
+			if (!this.$v.password.$dirty) return errors;
+			!this.$v.password.required && errors.push("Password is required");
+			!this.$v.password.minLength && errors.push("Password is min");
+			return errors;
+		},
+	},
 };
 </script>

@@ -22,7 +22,17 @@
 				d-flex
 				:style="'margin-bottom: 20px'"
 			>
-				<v-list></v-list>
+				<v-list color="main">
+					<router-link to="/" :class="{ active: this.$route.path === '/' }"
+						>Login</router-link
+					>
+					<router-link
+						to="/register"
+						:class="{ active: this.$route.path === '/register' }"
+						:style="'margin-left: 20px;'"
+						>Register</router-link
+					>
+				</v-list>
 			</v-app-bar>
 			<router-view />
 		</v-container>
@@ -49,4 +59,8 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.active {
+	font-weight: bold;
+}
+</style>
