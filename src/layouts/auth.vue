@@ -1,11 +1,21 @@
 <template>
+	<Spinner v-if="false" />
 	<v-content
+		v-else
 		d-flex
 		flex-column
 		:tag="'div'"
 		:style="{ background: this.background }"
 	>
-		<v-app-bar flat color="main"> <SwitchTheme /></v-app-bar>
+		<v-app-bar
+			flat
+			color="main"
+			max-width="100%"
+			class="d-flex flex-row justify-sm-end"
+			width="100%"
+		>
+			<SwitchTheme
+		/></v-app-bar>
 		<v-container
 			d-flex
 			flex-column
@@ -41,9 +51,12 @@
 
 <script>
 import SwitchTheme from "@/components/SwitchTheme.vue";
+import Spinner from "@/components/Spinner.vue";
+
 export default {
 	components: {
 		SwitchTheme,
+		Spinner,
 	},
 
 	inject: ["theme"],
@@ -62,5 +75,10 @@ export default {
 <style lang="scss" scoped>
 .active {
 	font-weight: bold;
+}
+.v-toolbar__content {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
 }
 </style>
