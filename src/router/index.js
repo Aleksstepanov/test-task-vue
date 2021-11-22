@@ -36,6 +36,10 @@ const routes = [
 			layout: "auth",
 		},
 	},
+	{
+		path: "*",
+		component: { render: (h) => h("div", ["404! Page Not Found!"]) },
+	},
 ];
 
 const router = new VueRouter({

@@ -28,7 +28,11 @@
 		</v-text-field>
 		<v-row>
 			<v-col sm="4" offset="8" class="mt-12">
-				<v-btn color="primary" :style="'width: 100%'" type="submit"
+				<v-btn
+					color="primary"
+					:style="'width: 100%'"
+					type="submit"
+					:disabled="$v.$invalid"
 					>Sign In</v-btn
 				>
 			</v-col>
@@ -58,8 +62,10 @@ export default {
 	},
 
 	methods: {
-		signInClickHandler() {
-			console.log(this.$v.$touch());
+		async signInClickHandler() {
+			if (!this.$v.$invalid) {
+				console.log("valid");
+			}
 		},
 		iconEyeClickHandler() {
 			this.showPassword = !this.showPassword;
