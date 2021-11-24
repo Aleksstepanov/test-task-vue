@@ -1,5 +1,7 @@
 <template>
+	<Spinner v-if="getLoading" />
 	<v-form
+		v-else
 		:style="'width: 400px; height: 400px; margin-top: 60px'"
 		@submit.prevent="signInClickHandler"
 	>
@@ -49,11 +51,15 @@
 
 <script>
 import { email, required, minLength } from "vuelidate/lib/validators";
+import { mapActions, mapGetters } from "vuex";
+import Spinner from "@/components/Spinner.vue";
 
 export default {
 	name: "Register",
 
-	components: {},
+	components: {
+		Spinner,
+	},
 
 	data() {
 		return {
@@ -72,9 +78,13 @@ export default {
 	},
 
 	methods: {
-		signInClickHandler() {
+		...mapActions(["register"]),
+		async signInClickHandler() {
 			if (!this.$v.$invalid) {
-				console.log("register!");
+				await this.register({
+					login: this.email,
+					password: this.password,
+				}).then(() => this.$router.push("/dashboard"));
 			}
 		},
 		iconEyeClickHandler() {
@@ -103,6 +113,7 @@ export default {
 			!this.$v.firstName.required && errors.push("Password is required");
 			return errors;
 		},
+		...mapGetters(["getLoading"]),
 	},
 };
 </script>

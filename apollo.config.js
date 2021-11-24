@@ -11,6 +11,7 @@ module.exports = {
 	client: {
 		service: env.VUE_APP_APOLLO_ENGINE_SERVICE,
 		includes: ["src/**/*.{js,jsx,ts,tsx,vue,gql}"],
+		uri: "https://gql.desq.info/graphql",
 	},
 	service: {
 		name: env.VUE_APP_APOLLO_ENGINE_SERVICE,

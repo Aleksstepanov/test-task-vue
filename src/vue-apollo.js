@@ -4,6 +4,7 @@ import {
 	createApolloClient,
 	restartWebsockets,
 } from "vue-cli-plugin-apollo/graphql-client";
+import { setContext } from "apollo-link-context";
 
 // Install the vue plugin
 Vue.use(VueApollo);
@@ -13,15 +14,27 @@ const AUTH_TOKEN = "apollo-token";
 
 // Http endpoint
 const httpEndpoint =
-	process.env.VUE_APP_GRAPHQL_HTTP || "http://localhost:4000/graphql";
+	process.env.VUE_APP_GRAPHQL_HTTP || "https://gql.desq.info/graphql";
 
 // Config
+
+const authLink = setContext(async (_, { headers }) => {
+	const token = JSON.parse(localStorage.getItem("auth-token"));
+	return {
+		headers: {
+			...headers,
+			authorization: token || "",
+		},
+	};
+});
 const defaultOptions = {
 	// You can use `https` for secure connection (recommended in production)
 	httpEndpoint,
 	// You can use `wss` for secure connection (recommended in production)
 	// Use `null` to disable subscriptions
-	wsEndpoint: process.env.VUE_APP_GRAPHQL_WS || "ws://localhost:4000/graphql",
+	wsEndpoint:
+		// process.env.VUE_APP_GRAPHQL_WS || "https://gql.desq.info/graphqll",
+		null,
 	// LocalStorage token
 	tokenName: AUTH_TOKEN,
 	// Enable Automatic Query persisting with Apollo Engine
@@ -31,6 +44,7 @@ const defaultOptions = {
 	websocketsOnly: false,
 	// Is being rendered on the server?
 	ssr: false,
+	link: authLink,
 
 	// Override default apollo link
 	// note: don't override httpLink here, specify httpLink options in the
@@ -80,6 +94,9 @@ export function createProvider(options = {}) {
 	return apolloProvider;
 }
 
+export const { apolloClient } = createApolloClient({
+	...defaultOptions,
+});
 // Manually call this when user log in
 export async function onLogin(apolloClient, token) {
 	if (typeof localStorage !== "undefined" && token) {

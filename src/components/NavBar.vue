@@ -27,6 +27,13 @@
 						</v-list-item-icon>
 						<v-list-item-title>Account</v-list-item-title>
 					</v-list-item>
+
+					<v-list-item @click="logOutClickHandler">
+						<v-list-item-icon>
+							<v-icon>mdi-exit-to-app</v-icon>
+						</v-list-item-icon>
+						<v-list-item-title>Log out</v-list-item-title>
+					</v-list-item>
 				</v-list-item-group>
 			</v-list>
 		</v-navigation-drawer>
@@ -36,6 +43,8 @@
 
 <script>
 import SwitchTheme from "./SwitchTheme.vue";
+import { mapActions } from "vuex";
+
 export default {
 	name: "NavBar",
 
@@ -46,6 +55,13 @@ export default {
 
 	components: {
 		SwitchTheme,
+	},
+
+	methods: {
+		...mapActions(["logOut"]),
+		async logOutClickHandler() {
+			this.logOut().then(() => this.$router.push("/"));
+		},
 	},
 };
 </script>
