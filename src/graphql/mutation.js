@@ -19,3 +19,13 @@ export const REGISTER_USER = gql`
 		}
 	}
 `;
+
+export const REFRESH_TOKEN = gql`
+	mutation refresh($refreshToken: String!) {
+		refresh(refreshToken: $refreshToken) {
+			login
+			accessToken
+			refreshToken
+		}
+	}
+`;

@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import auth from "./modules/auth";
+import accounts from "./modules/accounts";
 
 Vue.use(Vuex);
 
@@ -18,16 +19,17 @@ export default new Vuex.Store({
 			state.isLoading = val;
 		},
 		setInformation(state, val) {
-			state.information = Object.assign({}, state.information, val);
+			state.information = val;
 		},
 	},
 	actions: {},
 	getters: {
 		getError: (state) => state.error,
 		getLoading: (state) => state.isLoading,
-		gewtInformation: (state) => state.information,
+		getInformation: (state) => state.information,
 	},
 	modules: {
 		auth,
+		accounts,
 	},
 });

@@ -24,26 +24,19 @@
 			justify-lg-center
 			:style="'height: 100vh'"
 		>
-			<v-app-bar
-				tag="div"
-				flat
-				color="main"
-				max-height="30px"
-				d-flex
-				:style="'margin-bottom: 20px'"
+			<v-container
+				:style="'display: flex; flex-directions: rou; justify-content: center'"
 			>
-				<v-list color="main">
-					<router-link to="/" :class="{ active: this.$route.path === '/' }"
-						>Login</router-link
-					>
-					<router-link
-						to="/register"
-						:class="{ active: this.$route.path === '/register' }"
-						:style="'margin-left: 20px;'"
-						>Register</router-link
-					>
-				</v-list>
-			</v-app-bar>
+				<router-link to="/" :class="{ active: this.$route.path === '/' }"
+					>Login</router-link
+				>
+				<router-link
+					to="/register"
+					:class="{ active: this.$route.path === '/register' }"
+					:style="'margin-left: 20px;'"
+					>Register</router-link
+				>
+			</v-container>
 			<router-view />
 		</v-container>
 	</v-content>

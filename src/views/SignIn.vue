@@ -39,13 +39,21 @@
 				>
 			</v-col>
 		</v-row>
+		<SnackBar
+			:snackbar="getInformation.status === 'error'"
+			:text="returnErrorText"
+		/>
 	</v-form>
 </template>
 
 <script>
 import { email, required, minLength } from "vuelidate/lib/validators";
 import { mapActions, mapGetters } from "vuex";
+
 import Spinner from "@/components/Spinner.vue";
+import SnackBar from "@/components/SnackBar.vue";
+
+import { ErrMessage } from "../utils/constError";
 
 export default {
 	name: "Login",
@@ -57,6 +65,7 @@ export default {
 
 	components: {
 		Spinner,
+		SnackBar,
 	},
 
 	data() {
@@ -83,7 +92,7 @@ export default {
 	},
 
 	computed: {
-		...mapGetters(["getLoading"]),
+		...mapGetters(["getLoading", "getInformation"]),
 		emailErrors() {
 			const errors = [];
 			if (!this.$v.email.$dirty) return errors;
@@ -97,6 +106,9 @@ export default {
 			!this.$v.password.required && errors.push("Password is required");
 			!this.$v.password.minLength && errors.push("Password is min");
 			return errors;
+		},
+		returnErrorText() {
+			return ErrMessage(this.getInformation.message);
 		},
 	},
 };

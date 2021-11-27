@@ -10,7 +10,7 @@ import { setContext } from "apollo-link-context";
 Vue.use(VueApollo);
 
 // Name of the localStorage item
-const AUTH_TOKEN = "apollo-token";
+const AUTH_TOKEN = "auth-token";
 
 // Http endpoint
 const httpEndpoint =
@@ -23,7 +23,7 @@ const authLink = setContext(async (_, { headers }) => {
 	return {
 		headers: {
 			...headers,
-			authorization: token || "",
+			authorization: token ? `Bearer ${token}` : "",
 		},
 	};
 });
