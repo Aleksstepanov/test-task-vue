@@ -1,6 +1,6 @@
 <template>
 	<Spinner v-if="getLoading" />
-	<v-content v-else>
+	<v-main v-else>
 		<h3>This is Dashboard page!</h3>
 		<v-container>
 			<h3>Hi, Friend!</h3>
@@ -13,9 +13,9 @@
 		</v-container>
 		<v-container>
 			Your members:
-			<router-link to="/members">Members</router-link></v-container
+			<a @click="linkClickHanlder">Members</a></v-container
 		>
-	</v-content>
+	</v-main>
 </template>
 
 <script>
@@ -29,18 +29,16 @@ export default {
 		Spinner,
 	},
 
-	data() {
-		return {
-			totalCount: null,
-		};
-	},
-
 	methods: {
 		...mapActions(["fetchTotalAccounts"]),
+		linkClickHanlder() {
+			this.$router.push("/members");
+		},
 	},
 
-	created() {
-		this.fetchTotalAccounts();
+	async created() {
+		await this.fetchTotalAccounts();
+		console.log("created");
 	},
 
 	computed: {

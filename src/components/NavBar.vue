@@ -1,5 +1,12 @@
 <template>
-	<v-app-bar flat color="main" max-width="100%" class="d-flex flex-row">
+	<v-app-bar
+		flat
+		color="main"
+		max-width="100%"
+		class="d-flex flex-row"
+		dark
+		app
+	>
 		<v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
 
 		<v-navigation-drawer

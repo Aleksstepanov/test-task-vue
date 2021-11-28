@@ -1,23 +1,44 @@
 import { apolloClient } from "@/vue-apollo";
-import { ALL_ACCOUNTS } from "@/graphql/queries";
+import { TOTAL_COUNT, LIST_ACCOUNT } from "@/graphql/queries";
 
 const state = {
 	totalCount: null,
+	list: [],
 };
 const actions = {
 	async fetchTotalAccounts({ commit }) {
 		commit("setLoading", true);
 		try {
 			const { data } = await apolloClient.query({
-				query: ALL_ACCOUNTS,
+				query: TOTAL_COUNT,
 			});
-
+			console.log(data);
 			const { totalCount } = await data.accounts;
 
-			commit("setTotalAccount", totalCount);
 			commit("setLoading", false);
+			commit("setTotalAccount", totalCount);
+
 			commit("setError", null);
 			commit("setInformation", { status: "ok", message: "data received" });
+		} catch (error) {
+			commit("setLoading", false);
+			commit("setError", error);
+			commit("setInformation", { status: "error", message: `${error}` });
+		}
+	},
+	async fetchAccountList({ commit }) {
+		commit("setLoading", true);
+		try {
+			const { data } = await apolloClient.query({
+				query: LIST_ACCOUNT,
+			});
+			commit("setAccountList", data);
+			commit("setLoading", false);
+			commit("setError", null);
+			commit("setInformation", {
+				status: "ok",
+				message: "data received",
+			});
 		} catch (error) {
 			commit("setLoading", false);
 			commit("setError", error);
@@ -29,9 +50,13 @@ const mutations = {
 	setTotalAccount(state, val) {
 		state.totalCount = val;
 	},
+	setAccountList(state, val) {
+		state.list = val;
+	},
 };
 const getters = {
 	getTotalCount: (state) => state.totalCount,
+	getAccountList: (state) => state.list,
 };
 
 export default { state, actions, mutations, getters };

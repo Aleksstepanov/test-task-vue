@@ -1,6 +1,6 @@
 <template>
 	<Spinner v-if="false" />
-	<v-content
+	<v-main
 		v-else
 		d-flex
 		flex-column
@@ -39,7 +39,7 @@
 			</v-container>
 			<router-view />
 		</v-container>
-	</v-content>
+	</v-main>
 </template>
 
 <script>

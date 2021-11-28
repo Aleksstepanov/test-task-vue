@@ -8,6 +8,7 @@
 
 <script>
 import VueExtendLayout from "vue-extend-layout";
+import { mapActions } from "vuex";
 
 export default {
 	name: "App",
@@ -15,6 +16,14 @@ export default {
 	components: {
 		VueExtendLayout,
 	},
+
+	methods: {
+		...mapActions(["refreshToken"]),
+	},
+
+	// async created() {
+	// 	await this.refreshToken();
+	// },
 };
 </script>
 <style lang="scss"></style>

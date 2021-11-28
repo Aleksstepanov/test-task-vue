@@ -1,4 +1,33 @@
 <template>
-	<v-switch v-model="$vuetify.theme.dark" class="mt-6"></v-switch>
+	<v-switch
+		v-model="isDark"
+		class="mt-6"
+		@click="switchThemeClickHandler"
+	></v-switch>
 </template>
+
+<script>
+export default {
+	name: "SwitchTheme",
+
+	data() {
+		return {
+			isDark: false,
+		};
+	},
+
+	created() {
+		this.isDark = JSON.parse(localStorage.getItem("dark-theme"))?.dark || false;
+	},
+
+	methods: {
+		switchThemeClickHandler() {
+			this.$vuetify.theme.dark = this.isDark;
+			const dark = JSON.stringify({ dark: this.isDark });
+			localStorage.setItem("dark-theme", dark);
+		},
+	},
+};
+</script>
+
 <style lang="scss" scoped></style>

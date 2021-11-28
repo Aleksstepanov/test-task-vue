@@ -1,8 +1,8 @@
 <template>
-	<v-content tag="div" :style="{ background: this.background }">
+	<v-main tag="div" :style="{ background: this.background }">
 		<NavBar />
 		<router-view />
-	</v-content>
+	</v-main>
 </template>
 
 <script>

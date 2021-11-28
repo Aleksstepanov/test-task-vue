@@ -1,11 +1,9 @@
 import { onLogout, apolloClient } from "@/vue-apollo";
 import { LOGGED_IN_USER } from "@/graphql/queries";
-import { LOGIN_USER, REGISTER_USER } from "@/graphql/mutation";
+import { LOGIN_USER, REGISTER_USER, REFRESH_TOKEN } from "@/graphql/mutation";
 // import { INVALID_PASSWORD } from "../../utils/constError";
 
 const state = {
-	token: null,
-	refreshToken: null,
 	userProfile: null,
 	authStatus: false,
 };
@@ -20,9 +18,6 @@ const actions = {
 
 			const token = JSON.stringify(data.register.accessToken);
 			const refreshToken = JSON.stringify(data.register.refreshToken);
-
-			commit("setToken", token);
-			commit("setRefreshToken", refreshToken);
 
 			localStorage.setItem("auth-token", token);
 			localStorage.setItem("refresh-token", refreshToken);
@@ -45,21 +40,17 @@ const actions = {
 				mutation: LOGIN_USER,
 				variables: { ...payload },
 			});
-
 			const token = JSON.stringify(data.authenticate.accessToken);
 			const refreshToken = JSON.stringify(data.authenticate.refreshToken);
-
-			commit("setToken", token);
-			commit("setRefreshToken", refreshToken);
 
 			localStorage.setItem("auth-token", token);
 			localStorage.setItem("refresh-token", refreshToken);
 
-			commit("setLoading", false);
 			commit("setError", null);
 			commit("setInformation", { status: "ok", message: "user logged" });
 
-			dispatch("setUser");
+			await dispatch("setUser");
+			commit("setLoading", false);
 		} catch (error) {
 			commit("setLoading", false);
 			commit("setError", error);
@@ -73,8 +64,31 @@ const actions = {
 		const { data } = await apolloClient.query({ query: LOGGED_IN_USER });
 		const { login, id, refreshToken, createdAt, updatedAt } = await data.me;
 		const payload = { login, id, createdAt, updatedAt };
-		commit("setRefreshToken", refreshToken);
+
+		localStorage.setItem("refresh-token", refreshToken);
 		commit("loginUser", payload);
+	},
+	async refreshToken({ commit, dispatch }) {
+		commit("setLoading", true);
+		try {
+			const oldRefreshToken = JSON.parse(localStorage.getItem("refresh-token"));
+			const { data } = await apolloClient.mutate({
+				mutation: REFRESH_TOKEN,
+				variables: { refreshToken: oldRefreshToken },
+			});
+
+			commit("setLoading", false);
+			const token = JSON.stringify(data.refresh.accessToken);
+			const refreshToken = JSON.stringify(data.refresh.refreshToken);
+
+			localStorage.setItem("auth-token", token);
+			localStorage.setItem("refresh-token", refreshToken);
+
+			dispatch("setUser");
+		} catch (error) {
+			commit("setLoading", false);
+			dispatch("logOut");
+		}
 	},
 	async logOut({ commit }) {
 		commit("logoutUser");
@@ -84,12 +98,6 @@ const actions = {
 const mutations = {
 	setUserProfile(state, val) {
 		state.userProfile = val;
-	},
-	setToken(state, val) {
-		state.token = val;
-	},
-	setRefreshToken(state, val) {
-		state.refreshToken = val;
 	},
 	loginUser(state, val) {
 		state.authStatus = true;
@@ -102,8 +110,7 @@ const mutations = {
 	},
 };
 const getters = {
-	isAuthenticated: (state) => (state.token ? true : false),
-	authStatus: (state) => state.authStatus,
+	isAuthenticated: (state) => state.authStatus,
 	getUserProfile: (state) => state.userProfile,
 };
 

@@ -15,8 +15,8 @@ const routes = [
 	},
 	{
 		path: "/members",
-		name: "Mambers",
-		components: () => import("../views/Members.vue"),
+		name: "Members",
+		component: () => import("../views/Members.vue"),
 		meta: {
 			requiredAuth: true,
 		},
@@ -50,16 +50,12 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-	const isUserLoggedIn = store.getters.isAuthenticated;
-	if (to.matched.some((record) => record.meta.requiredAuth)) {
-		if (!isUserLoggedIn) {
-			store.dispatch("logOut");
-			next({
-				path: "/",
-				query: { redirect: to.fullPath },
-			});
-		} else {
+	const isAuthenticated = store.getters.isAuthenticated;
+	if (to.matched.some((route) => route.meta?.requiresAuth)) {
+		if (isAuthenticated()) {
 			next();
+		} else {
+			next("/");
 		}
 	} else {
 		next();
