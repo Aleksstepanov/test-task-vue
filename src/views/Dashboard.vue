@@ -2,7 +2,7 @@
 	<Spinner v-if="getLoading" />
 	<v-main v-else>
 		<h3>This is Dashboard page!</h3>
-		<v-container>
+		<v-container v-if="getUserProfile">
 			<h3>Hi, Friend!</h3>
 			<ul>
 				<li>email: {{ returnLoginUser }}</li>
@@ -38,19 +38,18 @@ export default {
 
 	async created() {
 		await this.fetchTotalAccounts();
-		console.log("created");
 	},
 
 	computed: {
 		...mapGetters(["getUserProfile", "getLoading", "getTotalCount"]),
 		returnLoginUser() {
-			return this.getUserProfile.login;
+			return this.getUserProfile.login || "";
 		},
 		returnCreatedAcc() {
-			return this.getUserProfile.createdAt;
+			return this.getUserProfile.createdAt || "";
 		},
 		returnUpdateAcc() {
-			return this.getUserProfile.updatedAt;
+			return this.getUserProfile.updatedAt || "";
 		},
 	},
 };

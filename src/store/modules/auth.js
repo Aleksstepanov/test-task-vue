@@ -71,7 +71,7 @@ const actions = {
 	async refreshToken({ commit, dispatch }) {
 		commit("setLoading", true);
 		try {
-			const oldRefreshToken = JSON.parse(localStorage.getItem("refresh-token"));
+			const oldRefreshToken = localStorage.getItem("refresh-token");
 			const { data } = await apolloClient.mutate({
 				mutation: REFRESH_TOKEN,
 				variables: { refreshToken: oldRefreshToken },
@@ -84,10 +84,12 @@ const actions = {
 			localStorage.setItem("auth-token", token);
 			localStorage.setItem("refresh-token", refreshToken);
 
-			dispatch("setUser");
+			await dispatch("setUser");
 		} catch (error) {
 			commit("setLoading", false);
 			dispatch("logOut");
+			console.log("user logout");
+			// throw new Error(error);
 		}
 	},
 	async logOut({ commit }) {
@@ -110,7 +112,7 @@ const mutations = {
 	},
 };
 const getters = {
-	isAuthenticated: (state) => state.authStatus,
+	isAuthenticated: (state) => !!state.authStatus,
 	getUserProfile: (state) => state.userProfile,
 };
 

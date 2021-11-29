@@ -8,7 +8,7 @@
 
 <script>
 import VueExtendLayout from "vue-extend-layout";
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
 	name: "App",
@@ -21,9 +21,13 @@ export default {
 		...mapActions(["refreshToken"]),
 	},
 
-	// async created() {
-	// 	await this.refreshToken();
-	// },
+	async created() {
+		await this.refreshToken();
+	},
+
+	computed: {
+		...mapGetters(["getLoading"]),
+	},
 };
 </script>
 <style lang="scss"></style>

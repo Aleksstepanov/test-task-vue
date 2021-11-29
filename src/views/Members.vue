@@ -3,11 +3,14 @@
 	<v-container v-else>
 		<h3>Members page</h3>
 		<v-data-table
+			v-if="returnAccountList"
 			:items="returnAccountList"
 			:items-per-page="5"
 			class="elevation-1"
 		></v-data-table>
-		{{ returnAccountList }}
+		<div v-if="returnAccountList">
+			{{ returnAccountList }}
+		</div>
 	</v-container>
 </template>
 
@@ -48,9 +51,11 @@ export default {
 	computed: {
 		...mapGetters(["getAccountList", "getLoading"]),
 		returnAccountList() {
-			const { list } = this.getAccountList.accounts;
-			return list.map(
-				(item) => (item = { login: item.login, createdAt: item.createdAt })
+			const { list } = this.getAccountList?.accounts || [];
+			return (
+				list?.map(
+					(item) => (item = { login: item.login, createdAt: item.createdAt })
+				) || ""
 			);
 		},
 	},

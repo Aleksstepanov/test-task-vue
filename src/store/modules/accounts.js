@@ -12,7 +12,6 @@ const actions = {
 			const { data } = await apolloClient.query({
 				query: TOTAL_COUNT,
 			});
-			console.log(data);
 			const { totalCount } = await data.accounts;
 
 			commit("setLoading", false);
