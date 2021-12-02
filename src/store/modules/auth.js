@@ -89,7 +89,7 @@ const actions = {
 			commit("setLoading", false);
 			dispatch("logOut");
 			console.log("user logout");
-			// throw new Error(error);
+			throw new Error(error);
 		}
 	},
 	async logOut({ commit }) {
@@ -107,8 +107,8 @@ const mutations = {
 	},
 	logoutUser(state) {
 		state.authStatus = false;
-		state.token = "" && localStorage.removeItem("auth-token");
-		state.refreshToken = "" && localStorage.removeItem("refresh-token");
+		localStorage.removeItem("auth-token");
+		localStorage.removeItem("refresh-token");
 	},
 };
 const getters = {

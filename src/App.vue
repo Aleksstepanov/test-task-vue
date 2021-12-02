@@ -1,7 +1,8 @@
 <template>
 	<v-app>
 		<v-theme-provider root>
-			<VueExtendLayout />
+			<Spinner v-if="isLoading" />
+			<VueExtendLayout v-else />
 		</v-theme-provider>
 	</v-app>
 </template>
@@ -9,12 +10,20 @@
 <script>
 import VueExtendLayout from "vue-extend-layout";
 import { mapActions, mapGetters } from "vuex";
+import Spinner from "@/components/Spinner.vue";
 
 export default {
 	name: "App",
 
 	components: {
 		VueExtendLayout,
+		Spinner,
+	},
+
+	data() {
+		return {
+			isLoading: true,
+		};
 	},
 
 	methods: {
@@ -22,7 +31,12 @@ export default {
 	},
 
 	async created() {
-		await this.refreshToken();
+		await this.refreshToken()
+			.then(() => {
+				this.isLoading = false;
+				this.$router.push("/dashboard");
+			})
+			.catch(() => (this.isLoading = false));
 	},
 
 	computed: {

@@ -52,25 +52,37 @@ const router = new VueRouter({
 const storeLoggedIn = () => store.getters.isAuthenticated;
 const loadSessionFromLocalStorage = async () => {
 	const token = localStorage.getItem("refresh-token");
+
 	if (token) {
-		await store.dispatch("refreshToken");
-		return true;
+		return await store
+			.dispatch("refreshToken")
+			.then(() => true)
+			.catch(() => false);
 	}
 	return false;
 };
 const isAuthenticated = storeLoggedIn || loadSessionFromLocalStorage;
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
 	if (to.matched.some((route) => route.meta?.requiredAuth)) {
-		if (!isAuthenticated) {
-			next({
-				path: "/",
-				params: { nextUrl: to.fullPath },
-			});
+		if (!isAuthenticated()) {
+			next("/");
 		} else {
 			next();
 		}
-	} else {
-		next();
 	}
+	next();
 });
+// if (to.matched.some((route) => route.meta?.requiredAuth)) {
+// 	if (!isAuthenticated) {
+// 		next({
+// 			path: "/",
+// 			params: { nextUrl: to.fullPath },
+// 		});
+// 	} else {
+// 		next();
+// 	}
+// } else {
+// 	next();
+// }
+
 export default router;

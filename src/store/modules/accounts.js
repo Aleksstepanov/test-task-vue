@@ -1,5 +1,10 @@
 import { apolloClient } from "@/vue-apollo";
-import { TOTAL_COUNT, LIST_ACCOUNT } from "@/graphql/queries";
+import {
+	TOTAL_COUNT,
+	LIST_ACCOUNT,
+	LIST_ACCOUNT_ORDER_ASC,
+	LIST_ACCOUNT_ORDER_DESC,
+} from "@/graphql/queries";
 
 const state = {
 	totalCount: null,
@@ -30,6 +35,27 @@ const actions = {
 		try {
 			const { data } = await apolloClient.query({
 				query: LIST_ACCOUNT,
+			});
+			commit("setAccountList", data);
+			commit("setLoading", false);
+			commit("setError", null);
+			commit("setInformation", {
+				status: "ok",
+				message: "data received",
+			});
+		} catch (error) {
+			commit("setLoading", false);
+			commit("setError", error);
+			commit("setInformation", { status: "error", message: `${error}` });
+		}
+	},
+	async fetchAccountListSort({ commit }, payload) {
+		commit("setLoading", true);
+		const queryConst =
+			payload === "ASC" ? LIST_ACCOUNT_ORDER_ASC : LIST_ACCOUNT_ORDER_DESC;
+		try {
+			const { data } = apolloClient.query({
+				query: queryConst,
 			});
 			commit("setAccountList", data);
 			commit("setLoading", false);

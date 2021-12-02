@@ -4,19 +4,18 @@
 		<h3>Members page</h3>
 		<v-data-table
 			v-if="returnAccountList"
+			:headers="headers"
 			:items="returnAccountList"
-			:items-per-page="5"
+			:items-per-page="10"
 			class="elevation-1"
 		></v-data-table>
-		<div v-if="returnAccountList">
-			{{ returnAccountList }}
-		</div>
 	</v-container>
 </template>
 
 <script>
 import Spinner from "@/components/Spinner.vue";
 import { mapGetters, mapActions } from "vuex";
+import dayjs from "dayjs";
 
 export default {
 	name: "Members",
@@ -41,7 +40,7 @@ export default {
 	},
 
 	methods: {
-		...mapActions(["fetchAccountList"]),
+		...mapActions(["fetchAccountList", "fetchAccountListSort"]),
 	},
 
 	async created() {
@@ -54,7 +53,11 @@ export default {
 			const { list } = this.getAccountList?.accounts || [];
 			return (
 				list?.map(
-					(item) => (item = { login: item.login, createdAt: item.createdAt })
+					(item) =>
+						(item = {
+							login: item.login,
+							createdAt: dayjs(item.createdAt).format("DD-MM-YYYY HH:mm:ss"),
+						})
 				) || ""
 			);
 		},

@@ -30,3 +30,25 @@ export const LIST_ACCOUNT = gql`
 		}
 	}
 `;
+
+export const LIST_ACCOUNT_ORDER_ASC = gql`
+	query listAccountSort {
+		accounts(orderBy: login_ASC) {
+			list {
+				login
+				createdAt
+			}
+		}
+	}
+`;
+
+export const LIST_ACCOUNT_ORDER_DESC = gql`
+	query listAccountSort {
+		accounts(orderBy: login_ASC) {
+			list {
+				login
+				createdAt
+			}
+		}
+	}
+`;
