@@ -44,7 +44,18 @@ export const LIST_ACCOUNT_ORDER_ASC = gql`
 
 export const LIST_ACCOUNT_ORDER_DESC = gql`
 	query listAccountSort {
-		accounts(orderBy: login_ASC) {
+		accounts(orderBy: login_DESC) {
+			list {
+				login
+				createdAt
+			}
+		}
+	}
+`;
+
+export const LIST_ACCOUNT_SEARCH = gql`
+	query searchAccount($login_contains: String!) {
+		accounts(where: { login_contains: $login_contains }) {
 			list {
 				login
 				createdAt

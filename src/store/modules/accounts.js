@@ -4,6 +4,7 @@ import {
 	LIST_ACCOUNT,
 	LIST_ACCOUNT_ORDER_ASC,
 	LIST_ACCOUNT_ORDER_DESC,
+	LIST_ACCOUNT_SEARCH,
 } from "@/graphql/queries";
 
 const state = {
@@ -50,15 +51,33 @@ const actions = {
 		}
 	},
 	async fetchAccountListSort({ commit }, payload) {
-		commit("setLoading", true);
 		const queryConst =
 			payload === "ASC" ? LIST_ACCOUNT_ORDER_ASC : LIST_ACCOUNT_ORDER_DESC;
+
 		try {
-			const { data } = apolloClient.query({
+			const { data } = await apolloClient.query({
 				query: queryConst,
 			});
 			commit("setAccountList", data);
 			commit("setLoading", false);
+			commit("setError", null);
+			commit("setInformation", {
+				status: "ok",
+				message: "data received",
+			});
+		} catch (error) {
+			commit("setError", error);
+			commit("setInformation", { status: "error", message: `${error}` });
+		}
+	},
+	async fetchSearchAccounts({ commit }, payload) {
+		try {
+			const { data } = await apolloClient.query({
+				query: LIST_ACCOUNT_SEARCH,
+				variables: { login_contains: payload },
+			});
+
+			commit("setAccountList", data);
 			commit("setError", null);
 			commit("setInformation", {
 				status: "ok",
