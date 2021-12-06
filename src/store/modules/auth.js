@@ -1,7 +1,6 @@
 import { onLogout, apolloClient } from "@/vue-apollo";
 import { LOGGED_IN_USER } from "@/graphql/queries";
 import { LOGIN_USER, REGISTER_USER, REFRESH_TOKEN } from "@/graphql/mutation";
-// import { INVALID_PASSWORD } from "../../utils/constError";
 
 const state = {
 	userProfile: null,

@@ -3,7 +3,11 @@
 		v-model="isDark"
 		class="mt-6"
 		@click="switchThemeClickHandler"
-	></v-switch>
+		:append-icon="isDark ? 'mdi-weather-night' : 'mdi-weather-sunny'"
+		><v-icon>{{
+			isDark ? "mdi-weather-night" : "mdi-weather-sunny"
+		}}</v-icon></v-switch
+	>
 </template>
 
 <script>
@@ -30,4 +34,9 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.v-icon {
+	color: black;
+	fill: black;
+}
+</style>
