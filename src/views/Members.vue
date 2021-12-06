@@ -1,7 +1,7 @@
 <template>
 	<Spinner v-if="getLoading" />
 	<v-container v-else>
-		<h3>Members page</h3>
+		<h3>Your members list</h3>
 		<v-data-table
 			v-if="returnAccountList"
 			:loading="isLoadingDataTable"
