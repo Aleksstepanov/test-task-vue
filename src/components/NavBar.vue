@@ -7,7 +7,10 @@
 		dark
 		app
 	>
-		<v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
+		<v-app-bar-nav-icon
+			@click="drawer = true"
+			:style="this.theme.isDark ? 'color: #fff' : 'color: black'"
+		></v-app-bar-nav-icon>
 
 		<v-navigation-drawer
 			v-model="drawer"
@@ -21,19 +24,22 @@
 					v-model="group"
 					active-class="deep-purple--text text--accent-4"
 				>
-					<v-list-item>
-						<v-list-item-icon>
-							<v-icon>mdi-home</v-icon>
-						</v-list-item-icon>
-						<v-list-item-title>Home</v-list-item-title>
-					</v-list-item>
-
-					<v-list-item>
-						<v-list-item-icon>
-							<v-icon>mdi-account</v-icon>
-						</v-list-item-icon>
-						<v-list-item-title>Account</v-list-item-title>
-					</v-list-item>
+					<router-link to="/dashboard">
+						<v-list-item>
+							<v-list-item-icon>
+								<v-icon>mdi-home</v-icon>
+							</v-list-item-icon>
+							<v-list-item-title>Dashboard</v-list-item-title>
+						</v-list-item>
+					</router-link>
+					<router-link to="/members">
+						<v-list-item>
+							<v-list-item-icon>
+								<v-icon>mdi-account</v-icon>
+							</v-list-item-icon>
+							<v-list-item-title>Members</v-list-item-title>
+						</v-list-item>
+					</router-link>
 
 					<v-list-item @click="logOutClickHandler">
 						<v-list-item-icon>
@@ -59,6 +65,8 @@ export default {
 		drawer: false,
 		group: null,
 	}),
+
+	inject: ["theme"],
 
 	components: {
 		SwitchTheme,

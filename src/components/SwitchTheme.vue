@@ -1,13 +1,11 @@
 <template>
-	<v-switch
-		v-model="isDark"
-		class="mt-6"
-		@click="switchThemeClickHandler"
-		:append-icon="isDark ? 'mdi-weather-night' : 'mdi-weather-sunny'"
-		><v-icon>{{
+	<div class="d-flex flex-row">
+		<v-switch v-model="isDark" class="mt-6" @click="switchThemeClickHandler">
+		</v-switch>
+		<v-icon :color="isDark ? '#fff' : 'black'">{{
 			isDark ? "mdi-weather-night" : "mdi-weather-sunny"
-		}}</v-icon></v-switch
-	>
+		}}</v-icon>
+	</div>
 </template>
 
 <script>
@@ -18,10 +16,6 @@ export default {
 		return {
 			isDark: false,
 		};
-	},
-
-	created() {
-		this.isDark = JSON.parse(localStorage.getItem("dark-theme"))?.dark || false;
 	},
 
 	methods: {

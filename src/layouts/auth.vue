@@ -27,12 +27,22 @@
 			<v-container
 				:style="'display: flex; flex-directions: rou; justify-content: center'"
 			>
-				<router-link to="/" :class="{ active: this.$route.path === '/' }"
+				<router-link
+					to="/"
+					:class="{
+						active: this.$route.path === '/',
+						'color-link-light': !this.theme.isDark,
+						'color-link-dark': this.theme.isDark,
+					}"
 					>Login</router-link
 				>
 				<router-link
 					to="/register"
-					:class="{ active: this.$route.path === '/register' }"
+					:class="{
+						active: this.$route.path === '/register',
+						'color-link-light': !this.theme.isDark,
+						'color-link-dark': this.theme.isDark,
+					}"
 					:style="'margin-left: 20px;'"
 					>Register</router-link
 				>
@@ -68,6 +78,12 @@ export default {
 <style lang="scss" scoped>
 .active {
 	font-weight: bold;
+}
+.color-link-light {
+	color: black;
+}
+.color-link-dark {
+	color: #fff;
 }
 .v-toolbar__content {
 	display: flex;
